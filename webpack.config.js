@@ -83,22 +83,21 @@ module.exports = {
       ],
     }),
     
-    // BrowserSync для автоматического обновления страницы
-    new BrowserSyncPlugin({
-      host: 'localhost',
-      port: 3000,
-      proxy: 'http://localhost:8000',
-      files: [
-        {
-          match: ['**/*.py', 'templates/**/*.html'],
-          fn: function(event, file) {
-            console.log(`File ${file} has been changed`);
-          }
-        }
-      ]
-    }, {
-      reload: false,
-    }),
+  // BrowserSync для автоматического обновления страницы  
+  new BrowserSyncPlugin({
+    host: 'localhost',
+    port: 3000,
+    proxy: 'http://localhost:8000',
+    files: [
+      'templates/**/*.html',
+      'static/dist/**/*.css',
+      'static/dist/**/*.js',
+      '**/*.py'
+    ],
+    reloadDelay: 300,
+    notify: false,
+  }),
+
   ],
   
   devtool: isDevelopment ? 'source-map' : false,
