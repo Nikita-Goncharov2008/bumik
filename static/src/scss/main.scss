@@ -1,3 +1,5 @@
+@use "sass:color";
+
 // Переменные
 $primary-color: #007bff;
 $secondary-color: #6c757d;
@@ -42,7 +44,7 @@ body {
     background-color: $secondary-color;
     
     &:hover {
-      background-color: darken($secondary-color, 10%);
+      background-color: color.adjust($secondary-color, $lightness: -10%);
     }
   }
 }

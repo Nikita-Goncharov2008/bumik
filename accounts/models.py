@@ -10,10 +10,23 @@ class User(AbstractUser):
     email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=40)
     last_name = models.CharField(max_length=40)
+    groups = models.ManyToManyField(
+        'auth.Group',
+        related_name='custom_user_set',  # добавить эту строку
+        blank=True
+    )
+    user_permissions = models.ManyToManyField(
+        'auth.Permission', 
+        related_name='custom_user_set',  # добавить эту строку
+        blank=True
+    )
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'username', 'last_name']
+    
     def get_full_name(self):
         return self.first_name + " " + self.last_name
+    
     def get_initials(self):
         return f'{self.first_name[:1]}{self.last_name[:1]}'.upper()
     
