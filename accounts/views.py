@@ -80,4 +80,4 @@ def logout_view(request):
         messages.info(request, f'До свидания, {user_name}!')
     else:
         messages.info(request, 'Вы успешно вышли из аккаунта.')
-    return redirect('login')
+    return redirect('accounts:login')

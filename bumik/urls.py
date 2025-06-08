@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from django.views.generic import RedirectView
+from django.views.generic import RedirectView, TemplateView
 
 urlpatterns = [
     # Admin
@@ -13,7 +13,7 @@ urlpatterns = [
     
     # Apps
     path('accounts/', include('accounts.urls')),
-    # path('dashboard/', include('core.urls')), 
+    path('dashboard/', TemplateView.as_view(template_name='base.html'), name='dashboard'),
     # path('projects/', include('projects.urls')),
     # path('boards/', include('boards.urls')),
     # path('tasks/', include('tasks.urls')),

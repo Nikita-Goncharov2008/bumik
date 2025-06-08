@@ -45,37 +45,9 @@ class CustomUserCreationForm(UserCreationForm):
         user.email = self.cleaned_data['email']
         if commit:
             user.save()
-            # Создаем профиль пользователя
-            UserProfile.objects.create(user=user)
+            # Профиль создается автоматически через сигнал
         return user
 
-class CustomAuthenticationForm(AuthenticationForm):
-    username = forms.EmailField(widget=forms.EmailInput(attrs={
-        'class': 'form__input',
-        'placeholder': 'Email',
-        'autofocus': True
-    }))
-    password = forms.CharField(widget=forms.PasswordInput(attrs={
-        'class': 'form__input',
-        'placeholder': 'Пароль'
-    }))
-    
-    def clean(self):
-        email = self.cleaned_data.get('username')
-        password = self.cleaned_data.get('password')
-        
-        if email and password:
-            self.user_cache = authenticate(
-                self.request,
-                username=email,
-                password=password
-            )
-            if self.user_cache is None:
-                raise forms.ValidationError('Неверный email или пароль')
-            else:
-                self.confirm_login_allowed(self.user_cache)
-        
-        return self.cleaned_data
 
 class CustomAuthenticationForm(AuthenticationForm):
     username = forms.EmailField(widget=forms.EmailInput(attrs={
@@ -104,7 +76,8 @@ class CustomAuthenticationForm(AuthenticationForm):
                 self.confirm_login_allowed(self.user_cache)
         
         return self.cleaned_data
-    
+
+
 class UserProfileForm(forms.ModelForm):
     first_name = forms.CharField(max_length=30, required=True)
     last_name = forms.CharField(max_length=30, required=True)
@@ -113,8 +86,8 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = [
-            'avatar', 'job_title', 'phone', 'timezone', 'email_notifications',
-            'task_notifications', 'comment_notifications', 
+            'avatar', 'job_title', 'phone', 'timezone',
+            'email_notifications','task_notifications', 'comment_notifications',
         ]
         widgets = {
             'avatar': forms.FileInput(attrs={'accept': 'image/*', 'class': 'form__file-input'})
@@ -135,6 +108,7 @@ class UserProfileForm(forms.ModelForm):
             elif field_name in ['email_notifications', 'task_notifications', 
                               'comment_notifications']:
                 field.widget.attrs.update({'class': 'form__checkbox'})
+    
     def save(self, commit=True):
         profile = super().save(commit=False)
         
@@ -142,9 +116,9 @@ class UserProfileForm(forms.ModelForm):
         profile.user.first_name = self.cleaned_data['first_name']
         profile.user.last_name = self.cleaned_data['last_name']
         profile.user.email = self.cleaned_data['email']
-       
+        
         if commit:
             profile.user.save()
             profile.save()
-       
+        
         return profile
