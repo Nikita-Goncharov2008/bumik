@@ -70,6 +70,18 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'bumik.wsgi.application'
 
+AUTH_USER_MODEL = 'accounts.User'
+LOGIN_URL = 'accounts:login'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = 'accounts:login'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+TIME_ZONE_CHOICES = [
+    ('UTC', 'UTC'),
+    ('Europe/Moscow', 'Москва (MSK)'),
+    ('America/New_York', 'Нью-Йорк (EST)'),
+    ('Europe/London', 'Лондон (GMT)')
+]
+
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
