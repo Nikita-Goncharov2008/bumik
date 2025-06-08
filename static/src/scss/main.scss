@@ -1,4 +1,12 @@
-/* static/css/base.css */
+@import 'pages/auth.scss';
+@import 'components/avatar.scss';
+@import 'components/button.scss';
+@import 'components/card.scss';
+@import 'components/form.scss';
+@import 'components/header.scss';
+@import 'components/messages.scss';
+
+
 
 /* CSS Custom Properties */
 :root {
