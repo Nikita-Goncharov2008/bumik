@@ -1,34 +1,81 @@
 <!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}My Django Project{% endblock %}</title>
-    
+<html lang="ru" class="theme-light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      {% block title %}{{ title|default:"ProjectManager" }}{% endblock %}
+    </title>
+
+    <!-- Preload fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/feather-icons@4.29.0/dist/feather.min.css"
+    />
+
+    <!-- Styles -->
     {% load static %}
-    
-    <!-- CSS файлы -->
-    <link rel="stylesheet" href="{% static 'dist/css/style.css' %}">
-    
+    <link rel="stylesheet" href="{% static 'dist/css/style.css' %}" />
     {% block extra_css %}{% endblock %}
-</head>
-<body>
-    <header>
-        <nav class="container">
-            <h1>My Django Project</h1>
-        </nav>
-    </header>
-    
-    <main class="container">
-        {% block content %}{% endblock %}
+
+    <!-- Meta -->
+    <meta name="description" content="Система управления проектами" />
+    <meta name="author" content="ProjectManager" />
+
+    <!-- Favicons -->
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="{% static 'images/favicon.ico' %}"
+    />
+  </head>
+  <body class="page">
+    <!-- Header -->
+    {% if user.is_authenticated %} {% include 'components/header.html' %}
+    {%endif %}
+
+    <!-- Main Content -->
+    <main
+      class="main {% if not user.is_authenticated %}main--fullscreen{% endif %}"
+    >
+      <!-- Messages -->
+      {% if messages %}
+      <div class="messages">
+        {% for message in messages %}
+        <div class="message message--{{ message.tags }}" data-auto-hide="true">
+          <div class="message__content">
+            <i
+              class="message__icon"
+              data-feather="{% if message.tags == 'success' %}check-circle{% elif message.tags == 'error' %}alert-circle{% elif message.tags == 'warning' %}alert-triangle{% else %}info{% endif %}"
+            ></i>
+            <span class="message__text">{{ message }}</span>
+          </div>
+          <button class="message__close" data-feather="x"></button>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <!-- Page Content -->
+      <div class="container">{% block content %}{% endblock %}</div>
     </main>
-    
-    <footer class="container">
-        <p>&copy; 2025 My Django Project</p>
-    </footer>
-    
-    <!-- JavaScript файлы -->
-    <script src="{% static 'dist/js/main.js' %}"></script>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.29.0/dist/feather.min.js"></script>
+    <script src="{% static 'js/main.js' %}"></script>
     {% block extra_js %}{% endblock %}
-</body>
+
+    <!-- Initialize Feather Icons -->
+    <script>
+      feather.replace();
+    </script>
+  </body>
 </html>
